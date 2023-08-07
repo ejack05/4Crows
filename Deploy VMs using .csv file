@@ -1,0 +1,23 @@
+#  This script wil create VMs based of a Template.
+#  Fist step is to create a template you will use as a reference.
+#  Create a .csv file with the following headings:
+#  NAME, TEMPLATE, CLUSTER, DATASTORE, FOLDER, PORTGROUP
+
+$FileName = "C:\PathToCsvFile.csv"
+
+forEach ( $vmLine in (Import-csv $FileName -UseCulture)){
+
+  # create VM
+  
+      $VM = New-VM -Name $vmLine.Name -Template $vmLine.Template -OSCustomizationSpec $vmLine.OSCUSTOM -ResourcePool $vmLine.CLUSTER -Datastore $vmLine.DATASTORE -Location $vmLine.FOLDER
+      Get-NetworkAdapter -VM $VM | Set-NetworkAdapter -NetworkName $vmLine.Portgroup -StartConnected:$true -Confirm:$false
+      
+      Sleep 15
+      
+  # Start VM
+  
+      Start-VM -VM $VM
+      Write-Host $VM created! -ForegroundColor Green
+      
+      Sleep 5
+      }
