@@ -1,0 +1,12 @@
+#  Pretty much the same script as the 'Snapshot VMs' script only a few changes. 
+#  All VMs will be reverted to the same snapshot (i.e. MySnapshotName).:
+
+$VMFolder = Read-Host 'Enter folder name'
+$Get-VM = @(Get-Folder -Name $VMFolder | Get-VM | where {$_.Name -notlike 'GreyBoT'}) # the where statement is optional.
+$SnapName = "MySnapshotName"
+ForEach ($VMName in $GetVM)
+{
+Write-Host "Reverting to Snapshot:" $VMName
+Get-Snapshot -VM $VMName -Name $SnapName | ForEach-Object { Set-VM -VM $_.VM -Snapshot $_ -Confirm:$false }
+}
+Write-Host "Completed!"
