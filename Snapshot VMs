@@ -1,4 +1,6 @@
 #  Script is pretty self explanatory, it will snapshot a list of VMs in a given folder. 
+#  Best practice is to make sure the VMs are powered off.  If a VM is on and not
+#  running VMTools (i.e. PfSense, VOS, Security Onion, etc) it WILL NOT not snapshot.  
 #  All VMs will have the same snapshot name (i.e. MySnapshotName).:
 
 $VMFolder = Read-Host 'Enter folder name'
