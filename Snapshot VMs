@@ -1,0 +1,12 @@
+#  Script is pretty self explanatory, it will snapshot a list of VMs in a given folder. 
+#  All VMs will have the same snapshot name (i.e. MySnapshotName).:
+
+$VMFolder = Read-Host 'Enter folder name'
+$Get-VM = @(Get-Folder -Name $VMFolder | Get-VM | where {$_.Name -notlike 'GreyBoT'}) # the where statement is optional.
+
+ForEach ($VMName in $GetVM)
+{
+Write-Host "Creating Snapshot for:" $VMName
+$VMName | New-Snapshot -Memory -Quiesce -Name "MySnapshotName" -RunAsync}
+
+Write-Host "Completed!"
