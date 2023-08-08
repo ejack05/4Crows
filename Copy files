@@ -1,1 +1,11 @@
+# Copy file from Local to VM - Windows
+Copy-VMGuesFile -Source "C:\DOWNLOAD1\test.txt" -LocalToGuest -VM "myWinVM" -Destination "C:\DOWNLOAD2\" -Force -Confirm:$false -GuestUser "administrator" -GuestPassword "password"
 
+## Copy file from Local to VM - Linux
+Copy-VMGuesFile -Source "C:\DOWNLOAD1\test.txt" -LocalToGuest -VM "myLnxVM" -Destination "/home/admin/DOWNLOAD2/" -GuestUser "admin" -GuestPassword "password"
+
+### Copy file from VM to Local - Windows
+Copy-VMGuestFile -Source "C:\DOWNLOAD2\notes.txt" -Destination "C:\DOWNLOAD1\" -VM "myWinVM" -GuestToLocal -GuestUser "domain\domain.adm" -GuestPassword "password"
+
+#### Copy file from VM to Local - Linux
+Copy-VMGuestFile -Source "/home/admin/notes.txt" -Destination "C:\DOWNLOAD1\" -VM "myLnxVM" -GuestToLocal -GuestUser "admin" -GuestPassword "password"
