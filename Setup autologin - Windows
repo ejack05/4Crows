@@ -1,0 +1,7 @@
+Press Windows Key + R to open the Run dialog.
+In the Run dialog box, type netplwiz and click OK. This will open the User Accounts window.
+Uncheck the Users must enter a user name and password to use this computer box.
+Click Apply.
+When prompted to user credentials, enter the username and password to disable password-based login. You may have to enter the username and password twice.
+Click OK to save and exit the window.
+On the next restart, you will be able to log in without entering a password for you account.
