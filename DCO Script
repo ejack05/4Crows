@@ -1,0 +1,74 @@
+#Working Functions
+#Remote Code Execution
+
+function Invoke-VMScript{
+param ([string]$VM, [string]$script)
+$GoodVM = $network | where-object Name -eq $VM
+if($GoodVM -eq $null)}
+  $GoodVM = $network | where-object ipv4address -eq $VM
+}
+invoke-command $GoodVM.ipvaddress -scriptblock {powershell -c $using:script} -credential $ScottCreds
+  }
+
+#File Transfer to Guest
+function CopyToGuest([string]$vm, [string]$file){
+$Transfer = "(new-object net.webclient).downloadstring('http://192.168.32.254:8000/$file') > 
+`"C:\users\area52admin\$file`""
+$Transfer
+$GoodVM = $network | where-object Name -eq $VM
+if($GoodVM -eq $null){
+  $GoodVM = $network | where-object ipv4address -eq $VM
+}
+  invoke-command $GoodVM.ipv4address -scriptblock {powershell -c $using:Transfer} - credential $ScottCreds
+}
+
+
+$Missions = ('ScottAFB', 'TBD1', 'TBD2')
+
+$MainForm = new-object system.windows.forms.form
+$MainForm.Text = 'DCO MC'
+$MainForm.AutoSize = $true
+$MainForm.Width = 200
+$MainForm.Height = 250
+
+$MainTitle = New-Object system.windows.forms.label
+$MainTitle.Text = 'DCO MISSION CONTROL'
+$MainTitle.AutoSize = $true
+$MainTitle.Location = New-Object system.drawing.point(20,20)
+$MainForm.Controls.Add($MainTitle)
+
+$DropDown_Mission = New-Object system.windows.forms.combobox
+$DropDown_Mission.Text = 'Select Mission'
+$DropDown_Mission.AutoSize = $true
+$DropDown_Mission.Width = 100
+$DropDown_Mission.Height = 20
+$DropDown_Mission.Location = New-Object system.drawing.point(20,55)
+$Missions | foreach{$DropDown_Mission.items.add($_)}
+$MainForm.Controls.Add($DropDown_Mission)
+
+$DropDown_Action = New-Object system.windows.forms.combobox
+$DropDown_Action.Text = 'Select Action'
+$DropDown_Action.AutoSize = $true
+$DropDown_Action.Width = 100
+$DropDown_Action.Height = 20
+$DropDown_Action.Location = New-Object system.drawing.point(20,95)
+$x = 'Power_On','Power_Off','Transfer_File','Remote_Code'
+$x | foreach{$DropDown_Action.items.add($_)}
+$MainForm.Controls.Add($DropDown_Action)
+
+$Button = New-Object system.windows.forms.button
+$Button.text = 'Start'
+$Button.AutoSize = $true
+$Button.Height = 20
+$Button.Width = 40
+$Button.BackColor = 'Green'
+$Button.ForeColor = 'White'
+$Button.Location = New-Object system.drawing.point(20,120)
+$Button.add_click{if$DropDown_Action.SelectedItem -eq 'Remote_Code'){
+Invoke-vmscript -vm 140.175.102.101 -script 'ping 140.175.102.1'
+}
+}
+$MainForms.Controls.Add($Button)
+
+$MainForm.ShowDialog()
+
