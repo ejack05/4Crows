@@ -1,0 +1,49 @@
+# Run this command if you get an error:  'Get-ExecutionPolicy -List'
+# If CurrentUser is anything other than 'Unrestricted' run the command below
+# 'Set-ExecutionPolicy Unrestricted -Scope CurrentUser'
+# Not sure if the 'rm z:\' is an error and should be x:\
+
+
+$Var = read-host -prompt '1 (GuestToLocal), 2 (LocalToGuest), 3 (GuestToGuest)'
+switch ($Var) {
+  "1" {
+  $Path = read-host -prompt 'Input file location'
+  $Dest = read-host -prompt 'Input file destination'
+  $VM = read-host -prompt 'Target VM'
+  $GUser = read-host -prompt 'Input Guest User'
+  $GPW = read-host -prompt 'Input Guest password' -AsSecureString
+  
+    Copy-VMGuestFile -source $path -destination $dest -guesttolocal -guestpassword $GPW -guestuser $GUser -VM $VM
+}
+  "2" {
+  $Path = read-host -prompt 'Input file location'
+  $Dest = read-host -prompt 'Input file destination'
+  $VM = read-host -prompt 'Target VM'
+  $GUser = read-host -prompt 'Input Guest User'
+  $GPW = read-host -prompt 'Input Guest password' -AsSecureString
+  
+    Copy-VMGuestFile -source $path -destination z:\TransferringFiles\xfer -localtoguest -guestpassword $GPW -guestuser $GUser -VM $VM
+    rm Z:\TransferringFiles\xfer
+}
+
+  "3" {
+  $VM1 = read-host -prompt 'Hosting VM'
+  $VM2 = read-host -prompt 'Target VM'
+  $Path = read-host -prompt 'Input file location'
+  $Dest = read-host -prompt 'Input file destination'
+  $VM = read-host -prompt 'Target VM'
+  $GUser1 = read-host -prompt 'Input Guest User'
+  $GPW1 = read-host -prompt 'Input Guest password' -AsSecureString
+  $GUser2 = read-host -prompt 'Input Guest User'
+  $GPW2 = read-host -prompt 'Input Guest password' -AsSecureString
+  
+    Copy-VMGuestFile -source $path -destination z:\TransferringFiles\xfer -localtoguest -guestpassword $GPW1 -guestuser $GUser1 -VM $VM1
+    rm Z:\TransferringFiles\xfer
+    Copy-VMGuestFile -source $path -destination z:\TransferringFiles\xfer -localtoguest -guestpassword $GPW2 -guestuser $GUser2 -VM $VM2
+    rm Z:\TransferringFiles\xfer
+}
+
+default { "Not an Option" }
+}
+# Not sure if this line is actually needed
+# Set-ExecutionPolicy AllSigned -Scope CurrentUser
